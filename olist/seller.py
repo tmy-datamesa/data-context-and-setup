@@ -160,12 +160,18 @@ class Seller:
 
 
     def get_training_data(self):
-        """
-        Returns a DataFrame with:
-        ['seller_id', 'seller_city', 'seller_state', 'delay_to_carrier',
-        'wait_time', 'date_first_sale', 'date_last_sale', 'months_on_olist',
-        'share_of_one_stars', 'share_of_five_stars', 'review_score',
-        'cost_of_reviews', 'n_orders', 'quantity', 'quantity_per_order',
-        'sales', 'revenues', 'profits']
-        """
-        pass  # YOUR CODE HERE
+        training_set = (
+            self.get_seller_features()
+                .merge(self.get_seller_delay_wait_time(), on='seller_id')
+                .merge(self.get_active_dates(), on='seller_id')
+                .merge(self.get_quantity(), on='seller_id')
+                .merge(self.get_sales().reset_index(), on='seller_id')
+        )
+
+        review_df = self.get_review_score()
+        training_set = training_set.merge(review_df, on='seller_id')
+
+        training_set['revenues'] = training_set['sales']
+        training_set['profits'] = training_set['revenues'] - training_set['cost_of_reviews']
+
+        return training_set
