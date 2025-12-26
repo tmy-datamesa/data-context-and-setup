@@ -175,4 +175,12 @@ class Seller:
         training_set['revenues'] = training_set['sales']
         training_set['profits'] = training_set['revenues'] - training_set['cost_of_reviews']
 
+        keep_cols = [
+            "seller_id", "seller_city", "seller_state",
+            "delay_to_carrier", "wait_time",
+            "date_first_sale", "date_last_sale", "months_on_olist",
+            "n_orders", "quantity", "quantity_per_order", "sales",
+            "share_of_one_stars", "share_of_five_stars", "review_score"
+        ]
+        training_set = training_set[keep_cols]
         return training_set
