@@ -159,6 +159,7 @@ class Seller:
         return res
 
 
+
     def get_training_data(self):
         training_set = (
             self.get_seller_features()
